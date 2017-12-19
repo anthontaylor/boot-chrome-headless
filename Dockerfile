@@ -69,4 +69,12 @@ google-chrome-stable
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 RUN apt-get install -y nodejs
+
+# Add Chrome as a user
+RUN groupadd -r chrome && useradd -r -g chrome -G audio,video chrome \
+&& mkdir -p /home/chrome && chown -R chrome:chrome /home/chrome
+
 RUN npm install -g karma karma-cljs-test karma-cli karma-chrome-launcher
+
+# Run Chrome non-privileged
+USER chrome
