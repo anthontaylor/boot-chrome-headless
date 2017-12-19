@@ -17,7 +17,15 @@ ENV BOOT_AS_ROOT=yes
 
 RUN boot
 
-RUN apt-get update
+RUN apt-get update && apt-get install -y \
+apt-transport-https
+
+RUN curl -sSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
+&& echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
+
+RUN apt-get update && apt-get install -y \
+google-chrome-stable
+
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 RUN apt-get install -y nodejs
 RUN npm install -g karma karma-cljs-test karma-cli karma-chrome-launcher
